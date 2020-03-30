@@ -18,4 +18,4 @@ To run this script, 4 arguments will be needed
  Args[4] : file name of output (result)
 
 
-## Rscirpt make_ucsc_bed.R Args[1] ... Args[4]
+##Rscirpt make_ucsc_bed.R Args[1] ... Args[4]
