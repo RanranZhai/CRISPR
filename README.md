@@ -1,21 +1,21 @@
 
-##CRISPR_effeciency ldsc
 
-FIRST step: make ucsc .bed file from genomic region information
+## count PAMs on 22 chromosomes
 
-To run this script, 4 arguments will be needed
- 
- Args[1] : file name of input, 
-	   which needs three columns 
-	   column 1 indicating chromsome (e.g. 1)
-		 column 2 start position
-		 column 3 end position (optional)
+We used the GRCh37 assembly of the uman genome, which can be found [here](). 
+Briefly, run `fecth.py` can get position of PAM sequence. For example, 
+``` 
+python fecth.py human_g1k_v37_bk.fasta GG > GG_hg19_pos.tsv
+```
+can get **GG** positions into **GG_hg19_pos.tsv** file.
 
- Args[2] : number, indicating bed file start from original start
- 
- Args[3] : number, indicating bed file end from original start
-
- Args[4] : file name of output (result)
+Considering the reverse strand, we also run `python fecth.py human_g1k_v37_bk.fasta CC > CC_hg19_pos.tsv` to get reversing **GG** positions.
 
 
-##Rscirpt make_ucsc_bed.R Args[1] ... Args[4]
+
+
+
+
+
+
+
