@@ -2,7 +2,7 @@
 
 ## Count PAMs on 22 chromosomes
 
-We used the GRCh37 assembly of the uman genome, which can be found [here](). 
+We used the GRCh37 assembly of the human genome, which can be found [here](). 
 Briefly, run `fecth.py` can get position of PAM sequence. 
 Taking **GG** for example, 
 ``` 
@@ -25,7 +25,7 @@ See `PAMs_top10.R`.
 
 ## Running LDSC
 The code in `make_annot_with_bed.R` is modified from the [LD Score Estimation Tutorial](https://github.com/bulik/ldsc/wiki/LD-Score-Estimation-Tutorial) to compute LD scores for all 22 chromosomes.
-**Partitioning heritability** also followed the instructions from [Partitioned Heritability](https://github.com/bulik/ldsc/wiki/Partitioned-Heritability) of LDSC software.
+**Partitioning heritability** of 28 human complex traits also followed the instructions from [Partitioned Heritability](https://github.com/bulik/ldsc/wiki/Partitioned-Heritability) of LDSC software.
 
 
 
