@@ -6,7 +6,7 @@ We used the GRCh37 assembly of the human genome, which can be found [here]().
 Briefly, run `fecth.py` can get position of PAM sequence. 
 Taking **NGG** for example, 
 ``` 
-python fecth.py human_g1k_v37_bk.fasta GG > GG_hg19_pos.tsv
+python fecth.py human_g1k_v37_bk.fasta GG > NGG_hg19_pos.tsv
 ```
 can get **NGG** positions into **NGG_hg19_pos.tsv** file.
 
