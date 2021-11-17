@@ -2,7 +2,7 @@
 
 ## Count PAMs on 22 chromosomes
 
-We used the GRCh37 assembly of the human genome, which can be found [here](). 
+We used the GRCh37 assembly of the human genome, which can be found [here](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/human_g1k_v37.fasta.gz). 
 Briefly, run `fecth.py` can get position of PAM sequence. 
 Taking **NGG** for example, 
 ``` 
