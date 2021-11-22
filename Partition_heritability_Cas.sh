@@ -1,4 +1,4 @@
-## run NGG annotation baselineV2.2
+## run Cas annotation using baselineV2.2
 ##
 
 DIR='/home/ranran/ldsc/formatted_gwas_29traits/'
