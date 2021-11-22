@@ -20,7 +20,7 @@ Then, run `make_bed_PAM.R` with argument `GG` to get PAM positions on both stran
 
 
 
-After getting positions of PAM, we count the number of each PAM on each cut of 20,000 segments (We simply think the 22 chromosomes as one). For each kind of Cas enzyme, we sum the number of **all PAMs that it recognises** on each segments, and get top10% (2,000)segments that contain most PAM sequences.
+After getting positions of PAM, we count the number of each PAM on each cut of 20,000 segments (We simply think the 22 chromosomes as one). For each Cas enzyme, we sum the number of **all PAMs that it recognises** on each segments, and get top10% (2,000)segments that contain most PAM sequences.
 ```
 load('/opt/ShaoYa/Users/ranran/PAM/GRC37_genome/CHRs_length.RData') ## get total length of each chromosome
 
