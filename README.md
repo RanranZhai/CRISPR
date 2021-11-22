@@ -74,6 +74,9 @@ which is modified from the [LDSC turorial](https://github.com/bulik/ldsc/wiki/LD
 
 
 **Partitioning heritability** of 28 human complex traits also followed the instructions from [Partitioned Heritability](https://github.com/bulik/ldsc/wiki/Partitioned-Heritability) of the LDSC software.
+```
+bash Partition_heritability_Cas.sh SpCas9
+```
 
 
 
