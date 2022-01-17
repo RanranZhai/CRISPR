@@ -81,7 +81,7 @@ bash Partition_heritability_Cas.sh SpCas9
 ## Annotation of the X chromosome
 The s-LDSC does not include the X chromosome for heritability enriichment analysis, or provide the functional annotations (e.g., coding, enhancer, etc.) for the X chromosome. To determine whether the pattern we found in the autosomal regions is similar on the X, we used the SNP annotation tool, SNPnexus, to annotate the HapMap3 SNPs on the X chromosome. 
 
-The functional annotations we used for the X chromosome includes gene annotations from UCSC, epigenomic markers (histone methylation, ) from Roadmap, and regulatory elements from Ensembl. 
+The functional annotations we used for the X chromosome includes gene annotations from UCSC, epigenomic markers from Roadmap, and regulatory elements from Ensembl. 
 
 To be comparable with the autosomal analysis, the X chromosome was also devided into 1078 cuts of the length 144 kb. Then the top 1078 cuts were selected as the Cas-featured regions.
 
