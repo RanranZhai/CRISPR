@@ -78,11 +78,19 @@ which is modified from the [LDSC turorial](https://github.com/bulik/ldsc/wiki/LD
 bash Partition_heritability_Cas.sh SpCas9
 ```
 
+## Annotation of the X chromosome
+The s-LDSC does not include the X chromosome for heritability enriichment analysis, or provide the functional annotations (e.g., coding, enhancer, etc.) for the X chromosome. To determine whether the pattern we found in the autosomal regions is similar on the X, we used the SNP annotation tool, SNPnexus, to annotate the HapMap3 SNPs on the X chromosome. 
+
+The functional annotations we used for the X chromosome includes gene annotations from UCSC, epigenomic markers (histone methylation, ) from Roadmap, and regulatory elements from Ensembl. 
+
+To be comparable with the autosomal analysis, the X chromosome was also devided into 1078 cuts of the length 144 kb. Then the top 1078 cuts were selected as the Cas-featured regions.
+
 
 
 ## References
 1. Bulik-Sullivan, B., Loh, PR., Finucane, H. et al. LD Score regression distinguishes confounding from polygenicity in genome-wide association studies. Nat Genet 47, 291–295 (2015). https://doi.org/10.1038/ng.3211
 2. Finucane, H., Bulik-Sullivan, B., Gusev, A. et al. Partitioning heritability by functional annotation using genome-wide association summary statistics. Nat Genet 47, 1228–1235 (2015). https://doi.org/10.1038/ng.3404
+3. Jorge Oscanoa, Lavanya Sivapalan, Emanuela Gadaleta, Abu Z Dayem Ullah, Nicholas R Lemoine, Claude Chelala, SNPnexus: a web server for functional annotation of human genome sequence variation (2020 update), Nucleic Acids Research, Volume 48, Issue W1, 02 July 2020, Pages W185–W192, https://doi.org/10.1093/nar/gkaa420
 
 
 
