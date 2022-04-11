@@ -1,100 +1,39 @@
+Thank you for your interest!! Here, I will briefly describe my analysis in the paper "Contribution of CRISPRable DNA on human complex traits" where we investigated the 21 Cas enriched genomic regions' contribution to human complex traits and diseases.
 
-
-## Count PAMs on 22 chromosomes
-
-We used the GRCh37 assembly of the human genome, which can be downloaded [here](https://gatk.broadinstitute.org/hc/en-us/articles/360035890711-GRCh37-hg19-b37-humanG1Kv37-Human-Reference-Discrepancies#humanG1Kv37). 
-Briefly, run `fecth.py` can get positions of PAM sequence. 
-Taking **NGG** for example, run
+## Heritability enrichment analysis
+Analysis of the human genome was based on the GRCh37 assembly, which can be found [here](https://gatk.broadinstitute.org/hc/en-us/articles/360035890711-GRCh37-hg19-b37-humanG1Kv37-Human-Reference-Discrepancies#humanG1Kv37). To simplify the process, we considered 22 autosomal chromosomes end to end as one single piece with a total of 2,881,033,286 bases. We cut the entire piece into 20,000 segments, resulting in about 144,052 bases per segment. We counted the number of PAM sequences in each segment, where the reverse strand was also considered. For example, when counting the number of the NGG sequence, we counted the number of both 5’-NGG-3’ and 5’-CCN-3’.
+Briefly, running `fecth.py` can get the position of the PAM sequence. 
+Taking **GG** for example, 
 ``` 
 python fecth.py human_g1k_v37_bk.fasta GG > GG_hg19_pos.tsv
 ```
-can get **NGG** positions into **GG_hg19_pos.tsv** file.
+can get **GG** positions into **GG_hg19_pos.tsv** file.
 
 Considering the reverse strand, we also run 
 ```
 python fecth.py human_g1k_v37_bk.fasta CC > CC_hg19_pos.tsv
 ``` 
-to get reversing **NGG** positions.
+to get reversing **GG** positions.
 
-Then, run `make_bed_PAM.R` with argument `GG` to get PAM positions on both strands.
+Annotation of Cas enriched regions is based on the number of individual PAM within each segment. For Cas with more than one PAM sequence, we selected the top 2,000 segments that have the highest sum of all its PAMs, denoting Cas enriched regions. These regions were saved into the 'Top10.bed' file.
 
-
-
-After getting positions of PAM, we count the number of each PAM on each cut of 20,000 segments (We simply think the 22 chromosomes as one). For each Cas enzyme, we sum the number of **all PAMs that it recognises** on each segments, and get top10% (2,000)segments that contain most PAM sequences.
+To investigate the magnitude of these Cas-enriched regions' contribution to human complex traits, we applied stratified linkage disequilibrium (LD) score regression (S-LDSC)\cite{Brendan2015LDSC, Finucane2015} to partition the heritability of each human complex trait.
+Run the following codes in the LDSC environment to do the heritability enrichment analysis, you can modify it to analyze other Cas/PAM easily.
 ```
-load('/opt/ShaoYa/Users/ranran/PAM/GRC37_genome/CHRs_length.RData') ## get total length of each chromosome
-
-N <- 20000
-M <- dd[1,23]/N
-M <- round(M) ## length of each segment
-
-dir.create(paste0('/opt/working/projects/prj_026_CRISPR/Cas/', Cas))
-PAM <- cas_info[which(cas_info$Cas == Cas), 'PAM']
-aa <- read.table(paste0('/opt/working/projects/prj_026_CRISPR/PAM/', PAM[1], '_PAM_count_both_strand.txt'), header = T, stringsAsFactors = F)
-aa <- aa[,1:3]
-for (pam in PAM) {
-	tmp <- read.table(paste0('/opt/working/projects/prj_026_CRISPR/PAM/', pam, '_PAM_count_both_strand.txt'), header = T, stringsAsFactors = F)
-	aa <- cbind(aa, tmp[,4])
-}
-colnames(aa)[-c(1:3)] <- PAM
-if (ncol(aa) > 4) {
-	aa$PAM_sum <- rowSums(aa[,-c(1:3)])
-} else {
-	aa$PAM_sum <- aa[,4]
-}
-yy <- aa[order(aa[,'PAM_sum'], decreasing = T),]
-top10 <- yy[1:2000,] ## get Top10%
-
-idx <- which(top10[,3]-top10[,2] < M-1)
-
-if (length(idx) > 0) {
-	for (i in 1:length(idx)) {
-		ccc <- top10[idx[i],3]-top10[idx[i],2]
-		tmp <- c(0,1, (M-ccc), (top10[idx[i],4]+1))
-		top10 <- rbind(top10, tmp)
-	}
-}
-
-options(scipen = 200)
-Top10 <- top10[,c(1,2,3)]
-Top10$Chr <- paste0('chr', Top10$Chr)
-
-write.table(Top10, file = paste0('/opt/working/projects/prj_026_CRISPR/Cas/', Cas, '/Top10.bed'), col.names = F, row.names = F, quote = F, sep = '\t')
+bash make_annot_gzip_Cas.sh
+bash compute_l2_Cas.sh
+bash Partition_heritability_Cas.sh
 ```
 
-## Heritability enrichment analysis
-
-With the `.bed` file, we can **compute annotation-specific LD scores** by running
-```
-bash make_annot_Cas.sh SpCas9 ## make annotation file
-
-bash compute_l2_Cas.sh SpCas9 ## compute LD scores
-```
-which is modified from the [LDSC turorial](https://github.com/bulik/ldsc/wiki/LD-Score-Estimation-Tutorial#partitioned-ld-scores).
+## Functional annotations
+The functional annotations for the autosomes are available [here](https://storage.googleapis.com/broad-alkesgroup-public/LDSCORE/1000G_Phase3_baselineLD_v2.2_ldscores.tgz), thanks to the efforts of the Alkes group from the Broad Institute. In our analysis, we test the enrichment of SNPs annotated for our Cas on the regulatory elements using Fisher's exact test. See `Cas_SNP_baseline_OR.R`.
 
 
-**Partitioning heritability** of 28 human complex traits also followed the instructions from [Partitioned Heritability](https://github.com/bulik/ldsc/wiki/Partitioned-Heritability) of the LDSC software.
-```
-bash Partition_heritability_Cas.sh SpCas9
-```
-
-## Annotation of the X chromosome
-The s-LDSC does not include the X chromosome for heritability enriichment analysis, or provide the functional annotations (e.g., coding, enhancer, etc.) for the X chromosome. To determine whether the pattern we found in the autosomal regions is similar on the X, we used the SNP annotation tool, SNPnexus, to annotate the HapMap3 SNPs on the X chromosome. 
-
-The functional annotations we used for the X chromosome includes gene annotations from UCSC, epigenomic markers from Roadmap, and regulatory elements from Ensembl. 
-
-To be comparable with the autosomal analysis, the X chromosome was also devided into 1078 cuts of the length 144 kb. Then the top 1078 cuts were selected as the Cas-featured regions.
-
+For the X chromosome, we kept the segments in the same length (144 kb) as we did for the autosomes, resulting in 1070 segments in total. Top10% of the 1070 segments were selected as the Cas enriched genomic regions on the X chromosome. Same as the autosomes, SNPs present in the top10% regions were annotated as 1 and other SNPs were annotated as 0 for each Cas. We then queried 125,497 Hapmap3 SNPs on https://www.snp-nexus.org/v4/ for four gene annotations from UCSC, eight epigenetic markers from Roadmap, and five regulator elements from Ensembl. The odds ratio was also obtained from Fisher's exact test.
 
 
 ## References
 1. Bulik-Sullivan, B., Loh, PR., Finucane, H. et al. LD Score regression distinguishes confounding from polygenicity in genome-wide association studies. Nat Genet 47, 291–295 (2015). https://doi.org/10.1038/ng.3211
 2. Finucane, H., Bulik-Sullivan, B., Gusev, A. et al. Partitioning heritability by functional annotation using genome-wide association summary statistics. Nat Genet 47, 1228–1235 (2015). https://doi.org/10.1038/ng.3404
 3. Jorge Oscanoa, Lavanya Sivapalan, Emanuela Gadaleta, Abu Z Dayem Ullah, Nicholas R Lemoine, Claude Chelala, SNPnexus: a web server for functional annotation of human genome sequence variation (2020 update), Nucleic Acids Research, Volume 48, Issue W1, 02 July 2020, Pages W185–W192, https://doi.org/10.1093/nar/gkaa420
-
-
-
-
-
-
 
