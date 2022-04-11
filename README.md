@@ -17,7 +17,7 @@ to get reversing **GG** positions.
 
 Annotation of Cas enriched regions is based on the number of individual PAM within each segment. For Cas with more than one PAM sequence, we selected the top 2,000 segments that have the highest sum of all its PAMs, denoting Cas enriched regions. These regions were saved into the 'Top10.bed' file.
 
-To investigate the magnitude of these Cas-enriched regions' contribution to human complex traits, we applied stratified linkage disequilibrium (LD) score regression (S-LDSC)\cite{Brendan2015LDSC, Finucane2015} to partition the heritability of each human complex trait.
+To investigate the magnitude of these Cas-enriched regions' contribution to human complex traits, we applied stratified linkage disequilibrium (LD) score regression (S-LDSC) to partition the heritability of each human complex trait.
 Run the following codes in the LDSC environment to do the heritability enrichment analysis, you can modify it to analyze other Cas/PAM easily.
 ```
 bash make_annot_gzip_Cas.sh
